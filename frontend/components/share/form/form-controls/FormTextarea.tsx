@@ -19,11 +19,12 @@ export default function FormTextarea({
 }: FormTextarea) {
   return (
     <FormField field={field} label={label} fieldLabelStyle={fieldLabelStyle}>
-      {({ id, name, isInvalid, onBlur, onChange }) => (
+      {({ id, name, isInvalid, onBlur, onChange, value }) => (
         <Textarea
           {...props}
           id={id}
           name={name}
+          value={value}
           aria-invalid={isInvalid}
           onBlur={onBlur}
           onChange={(e) => onChange(e.target.value)}

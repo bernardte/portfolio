@@ -1,11 +1,13 @@
-// ContactForm.tsx
 "use client";
+
 import { useState } from "react";
 import FormInput from "../share/form/form-controls/FormInput";
 import { useForm } from "@tanstack/react-form-nextjs";
 import FormTextarea from "../share/form/form-controls/FormTextarea";
 import { CheckCircle2, Send, XCircle } from "lucide-react";
 import FormButtton from "../share/form/form-controls/FormButtton";
+import { useParams } from "next/navigation";
+import { sendContactMessage } from "@/lib/api/contact-message";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -13,7 +15,9 @@ type SubmitStatus = "idle" | "success" | "error";
 
 export default function ContactForm() {
   const [status, setStatus] = useState<SubmitStatus>("idle");
-
+  const  params =  useParams<{ slug: string }>();
+  const { slug } = params;
+  
   const form = useForm({
     defaultValues: {
       name: "",
@@ -25,8 +29,10 @@ export default function ContactForm() {
       setStatus("idle");
       try {
         // Replace with your actual submit call (server action / API route)
-        // await sendContactMessage(value);
-        console.log(value);
+        if (slug) {
+          await sendContactMessage(value, slug);
+        }
+
         setStatus("success");
 
         setTimeout(() => {
@@ -40,9 +46,9 @@ export default function ContactForm() {
     }
   });
 
-const inputClassName =
-  "w-full bg-brand-bg/40 text-md border-brand-accent/20 focus-visible:ring-brand-primary focus-visible:border-brand-primary rounded-md px-4 py-5 text-white placeholder:text-neutral-500 transition-colors";
-  
+  const inputClassName =
+    "w-full bg-brand-bg/40 text-md border-brand-accent/20 focus-visible:ring-brand-primary focus-visible:border-brand-primary rounded-md px-4 py-5 text-white placeholder:text-neutral-500 transition-colors";
+
   return (
     <form
       id="contact-us-form"
@@ -72,11 +78,6 @@ const inputClassName =
                 className={inputClassName}
                 aria-invalid={field.state.meta.errors.length > 0}
               />
-              {field.state.meta.errors.length > 0 && (
-                <p className="mt-1 text-xs text-red-400">
-                  {field.state.meta.errors.join(", ")}
-                </p>
-              )}
             </div>
           )}
         </form.Field>
@@ -103,11 +104,6 @@ const inputClassName =
                 className={inputClassName}
                 aria-invalid={field.state.meta.errors.length > 0}
               />
-              {field.state.meta.errors.length > 0 && (
-                <p className="mt-1 text-xs text-red-400">
-                  {field.state.meta.errors.join(", ")}
-                </p>
-              )}
             </div>
           )}
         </form.Field>
@@ -131,11 +127,6 @@ const inputClassName =
                   className={inputClassName}
                   aria-invalid={field.state.meta.errors.length > 0}
                 />
-                {field.state.meta.errors.length > 0 && (
-                  <p className="mt-1 text-xs text-red-400">
-                    {field.state.meta.errors.join(", ")}
-                  </p>
-                )}
               </div>
             )}
           </form.Field>
@@ -165,13 +156,6 @@ const inputClassName =
                   />
                 </div>
                 <div className="mt-1 flex items-center justify-between">
-                  {field.state.meta.errors.length > 0 ? (
-                    <p className="text-xs text-red-400">
-                      {field.state.meta.errors.join(", ")}
-                    </p>
-                  ) : (
-                    <span />
-                  )}
                   <span className="text-xs text-neutral-500">
                     {field.state.value.length}/500
                   </span>
@@ -204,10 +188,14 @@ const inputClassName =
               <FormButtton
                 isSubmitting={isSubmitting}
                 canSubmit={canSubmit}
-                iconComponent={Send}
+                buttonContent={
+                  <>
+                    <span>Send Message</span>
+                    <Send size={4} />
+                  </>
+                }
                 buttonType={"submit"}
                 buttonVariant={"default"}
-                className={""}
               />
             )}
           </form.Subscribe>

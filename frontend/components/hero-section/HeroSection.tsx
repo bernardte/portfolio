@@ -1,12 +1,16 @@
 import { AuroraText } from "@/components/ui/aurora-text";
 import { buttonVariants } from "../ui/button";
 import { ArrowRight, GraduationCap } from "lucide-react";
-import { SOCIAL_MEDIA_LINK } from "@/constants/navlink";
 import Link from "next/link";
 import CodeWindow from "./CodeWindow";
 import { cn } from "@/lib/utils";
+import { ProfileResponse } from "@/lib/interface/portfolio.interface";
+import { getSocialMediaLink } from "@/lib/utils/getSocialMediaLink";
 
-export default function HeroSection() {
+export default function HeroSection({ profile } : { profile: ProfileResponse }) {
+  
+  const socialLink = getSocialMediaLink(profile);
+
   return (
     <section
       id="home"
@@ -20,7 +24,7 @@ export default function HeroSection() {
         </div>
         <div>
           <h2 className="text-5xl font-bold text-wrap text-white md:leading-relaxed">
-            Hi&#44; I'm Yu Hang👋
+            Hi&#44; I'm {profile.name}👋
           </h2>
           <h3 className="text-4xl font-semibold text-white">
             I build{" "}
@@ -35,7 +39,7 @@ export default function HeroSection() {
         </p>
         <div className="flex items-center gap-3">
           <Link
-            href={"/#project"}
+            href={`/${profile.slug}/#project`}
             className={cn(
               "px-5 py-2",
               buttonVariants({ variant: "ghost", size: "lg" })
@@ -45,7 +49,7 @@ export default function HeroSection() {
             <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
           </Link>
           <Link
-            href="mailto:yuhang028@gmail.com"
+            href={`mailto:${profile.email}`}
             className={cn(
               "px-5 py-2",
               buttonVariants({ variant: "default", size: "lg" })
@@ -55,7 +59,7 @@ export default function HeroSection() {
           </Link>
         </div>
         <div className="flex items-center gap-3">
-          {SOCIAL_MEDIA_LINK.map((link) => {
+          {socialLink.map((link) => {
             const Icon = link.icon;
             return (
               <Link

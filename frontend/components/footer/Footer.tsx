@@ -1,11 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import { SOCIAL_MEDIA_LINK } from "@/constants/navlink";
 import { buttonVariants } from "../ui/button";
-import { ArrowUp } from "lucide-react"; // 或任意向上箭头图标
+import { getSocialMediaLink } from "@/lib/utils/getSocialMediaLink";
+import { ProfileResponse } from "@/lib/interface/portfolio.interface";
 
-export default function Footer() {
+export default function Footer({ profile }: { profile: ProfileResponse }) {
   const currentYear = new Date().getFullYear();
+  const socialMediaLink = getSocialMediaLink(profile);
 
   return (
     <footer className="relative mt-20 border-t border-white/10 bg-white/5 backdrop-blur-sm">
@@ -13,7 +14,7 @@ export default function Footer() {
       <div className="via-brand-accent/60 absolute top-0 left-0 h-0.5 w-full bg-gradient-to-r from-transparent to-transparent" />
 
       <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col items-center gap-6 md:flex-row md:justify-between md:gap-4 mx-10">
+        <div className="mx-10 flex flex-col items-center gap-6 md:flex-row md:justify-between md:gap-4">
           {/* 左侧：Logo + 品牌信息 */}
           <div className="flex items-center gap-4">
             <div className="relative shrink-0">
@@ -40,7 +41,7 @@ export default function Footer() {
           <div className="flex flex-col items-center gap-3 md:items-end">
             {/* 社交图标组 */}
             <div className="flex gap-3">
-              {SOCIAL_MEDIA_LINK.map((link) => {
+              {socialMediaLink.map((link) => {
                 const Icon = link.icon;
                 return (
                   <Link
@@ -65,7 +66,7 @@ export default function Footer() {
             {/* 版权 + 回到顶部 */}
             <div className="text-muted-foreground flex items-center gap-4 text-xs">
               <span>
-                &copy; {currentYear} Tee Yu Hang. All rights reserved.
+                &copy; {currentYear} {profile.name}. All rights reserved.
               </span>
             </div>
           </div>
