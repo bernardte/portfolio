@@ -15,6 +15,13 @@ function isExpired(token?: string) {
 }
 
 export async function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  const publicPaths = ["/admin/auth"];
+  if (publicPaths.some((path) => pathname.startsWith(path))) {
+    return NextResponse.next();
+  }
+
   const accessToken = request.cookies.get("accessToken")?.value;
 
   if (isExpired(accessToken)) {
@@ -57,3 +64,10 @@ export async function proxy(request: NextRequest) {
 
   return NextResponse.next();
 }
+
+export const config = {
+  matcher: [
+    "/admin/:path*",
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"
+  ]
+};
