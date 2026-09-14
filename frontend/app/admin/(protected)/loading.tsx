@@ -29,7 +29,7 @@ export default function Loading() {
       {/* 2. 核心内容 */}
       <div className="z-10 flex flex-col items-center text-center">
         {/* PS 渐变 Logo */}
-        <div className="relative mb-6 flex h-24 w-24 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 via-teal-500 to-purple-500 p-[3px] shadow-lg shadow-teal-500/10">
+        <div className="relative mb-6 flex h-24 w-24 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-primary via-brand-accent to-sky-500 p-[3px] shadow-lg shadow-teal-500/10">
           <div className="flex h-full w-full items-center justify-center rounded-[13px] bg-[#F4F6F9]">
             <Image alt="Logo" src={"/logo.svg"} height={600} width={600} />
           </div>
@@ -48,7 +48,7 @@ export default function Loading() {
           {/* 进度条轨道 */}
           <div className="relative h-2.5 flex-1 overflow-hidden rounded-full bg-slate-200/80">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-teal-400 to-cyan-400 transition-all duration-300 ease-out"
+              className="h-full rounded-full bg-gradient-to-r from-brand-primary to-brand-accent transition-all duration-300 ease-out"
               style={{ width: `${progress}%` }}
             />
           </div>

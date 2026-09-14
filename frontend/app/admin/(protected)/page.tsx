@@ -11,7 +11,7 @@ import {
   ProfileInformationResponse
 } from "@/lib/interface/profile.interface";
 import { SkillCategoryResponse } from "@/lib/interface/skill.interface";
-import { ArrowUpDown, Plus } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import StrengthsCard from "@/components/admin/home/StrengthCard";
@@ -172,8 +172,8 @@ export default async function AdminHomePage() {
                   variant={"default"}
                   className="flex items-center gap-1.5"
                 >
-                  <Plus className="h-3.5 w-3.5" />
-                  Add Project
+                  <ArrowUpDown className="h-3.5 w-3.5" />
+                  Manage Project
                 </Button>
               </Link>
             </div>
