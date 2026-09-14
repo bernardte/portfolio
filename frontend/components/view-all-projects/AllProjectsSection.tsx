@@ -1,4 +1,3 @@
-// components/my-project-section/AllProjectsSection.tsx
 "use client";
 
 import { useMemo, useState } from "react";
@@ -8,7 +7,8 @@ import {
   X,
   FolderKanban,
   SlidersHorizontal,
-  ArrowLeft
+  ArrowLeft,
+  ChevronDown
 } from "lucide-react";
 import ProjectCard from "@/components/my-project-section/ProjectCard";
 import { ProjectResponse } from "@/lib/interface/portfolio.interface";
@@ -20,6 +20,8 @@ interface AllProjectsSectionProps {
   slug: string;
 }
 
+const TAG_PREVIEW_COUNT = 8; // 默认展示几个标签
+
 export default function AllProjectsSection({
   projects,
   slug
@@ -27,12 +29,18 @@ export default function AllProjectsSection({
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTag, setActiveTag] = useState<string | null>(null);
+  const [tagsExpanded, setTagsExpanded] = useState(false);
 
   const allTags = useMemo(() => {
     const tagSet = new Set<string>();
     projects.forEach((p) => p.projectTechStack.forEach((b) => tagSet.add(b)));
     return Array.from(tagSet).sort();
   }, [projects]);
+
+  const visibleTags = tagsExpanded
+    ? allTags
+    : allTags.slice(0, TAG_PREVIEW_COUNT);
+  const hiddenCount = allTags.length - TAG_PREVIEW_COUNT;
 
   const filteredProjects = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
@@ -55,7 +63,6 @@ export default function AllProjectsSection({
       <div className="pointer-events-none absolute -top-10 right-1/4 -z-10 h-72 w-72 rounded-full bg-purple-500/10 blur-[100px]" />
 
       {/* 返回按钮 */}
-
       <Link
         href={`/${slug}`}
         className={buttonVariants({
@@ -129,7 +136,7 @@ export default function AllProjectsSection({
         </div>
 
         {allTags.length > 0 && (
-          <div className="-mx-1 flex scrollbar-none items-center gap-2 overflow-x-auto px-1 pb-0.5">
+          <div className="flex flex-wrap items-center gap-2">
             <button
               type="button"
               onClick={() => setActiveTag(null)}
@@ -141,7 +148,7 @@ export default function AllProjectsSection({
             >
               All
             </button>
-            {allTags.map((tag) => (
+            {visibleTags.map((tag) => (
               <button
                 key={tag}
                 type="button"
@@ -155,6 +162,21 @@ export default function AllProjectsSection({
                 {tag}
               </button>
             ))}
+
+            {hiddenCount > 0 && (
+              <button
+                type="button"
+                onClick={() => setTagsExpanded((v) => !v)}
+                className="border-brand-accent/10 bg-brand-card hover:border-brand-primary/30 flex shrink-0 items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium whitespace-nowrap text-neutral-400 transition-all hover:text-neutral-200"
+              >
+                {tagsExpanded ? "Show less" : `+${hiddenCount} more`}
+                <ChevronDown
+                  className={`size-3.5 transition-transform duration-300 ${
+                    tagsExpanded ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+            )}
           </div>
         )}
       </div>
