@@ -2,11 +2,10 @@ import { ArrowRight, FolderGit2 } from "lucide-react";
 import Link from "next/link";
 import { buttonVariants } from "../ui/button";
 import { cn } from "@/lib/utils";
-import ProjectCard from "./ProjectCard";
-import { POST_CARD_DETAILS } from "@/constants/postCardDetails";
 import ProjectCarousel from "./ProjectCarousel";
+import { ProjectResponse } from "@/lib/interface/portfolio.interface";
 
-export default function MyProjectSection() {
+export default function MyProjectSection({ projects, slug } : { projects: ProjectResponse[], slug: string }) {
   return (
     <section id="project" className="mx-auto mt-12 max-w-7xl space-y-3 px-6">
       {/* Header */}
@@ -23,7 +22,7 @@ export default function MyProjectSection() {
               className: "border-brand-accent text-brand-primary border"
             })
           )}
-          href={"/projects"}
+          href={`/${slug}/projects`}
         >
           View All Projects <ArrowRight />
         </Link>
@@ -32,7 +31,7 @@ export default function MyProjectSection() {
       <div className="text-3xl font-bold text-white">
         Things I&rsquo;ve Built
       </div>
-      <ProjectCarousel postCard={POST_CARD_DETAILS} />
+      <ProjectCarousel projects={projects} />
     </section>
   );
 }

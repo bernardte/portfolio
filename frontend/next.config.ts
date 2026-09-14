@@ -15,6 +15,18 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "cdn.simpleicons.org"
+      },
+      {
+        protocol: "https",
+        hostname: "bright-white-8zv92gdj.edgeone.dev"
+      },
+      {
+        protocol: "https",
+        hostname: "i.pravatar.cc"
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com"
       }
     ]
   }

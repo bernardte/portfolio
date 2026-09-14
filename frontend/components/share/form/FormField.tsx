@@ -25,7 +25,8 @@ export default function FormField({
   children,
   fieldLabelStyle
 }: FormFieldProps) {
-  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+  const errors = field.state.meta.errors;
+  const isInvalid = field.state.meta.isTouched && errors.length > 0;
 
   return (
     <Field data-invalid={isInvalid}>
@@ -40,7 +41,7 @@ export default function FormField({
         onBlur: field.handleBlur,
         onChange: field.handleChange
       })}
-      {isInvalid && <FieldError errors={field.state.meta.errors} />}
+      {isInvalid && <FieldError>{field.state.meta.errors[0]}</FieldError>}
     </Field>
   );
 }

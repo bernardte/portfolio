@@ -3,8 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import Navbar from "@/components/navbar/Navbar";
-import Footer from "@/components/footer/Footer";
+import { Toaster } from "@/components/ui/toast";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -37,7 +36,7 @@ export const metadata: Metadata = {
     }
   ],
   creator: "Yu Hang Tee",
-  metadataBase: new URL("https://your-domain.com"),
+  // metadataBase: new URL("https://your-domain.com"),
   openGraph: {
     title: "Yu Hang Tee | Software Developer",
     description:
@@ -56,17 +55,18 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={cn(
         "scroll-smooth",
         geistMono.variable,
         "font-sans",
         geist.variable
       )}
+      suppressHydrationWarning
     >
       <body className="flex min-h-screen flex-col bg-[#080d18] font-sans text-white antialiased">
-        <Navbar />
         {children}
-        <Footer />
+        <Toaster />
       </body>
     </html>
   );

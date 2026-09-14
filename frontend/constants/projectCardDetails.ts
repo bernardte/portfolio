@@ -72,3 +72,4 @@ export const POST_CARD_DETAILS: PostCardItems[] = [
     ]
   }
 ];
+

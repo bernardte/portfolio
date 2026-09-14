@@ -6,11 +6,21 @@ import { useEffect, useState } from "react";
 import { NAV_LINK } from "@/constants/navlink";
 import { Download, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/hook/use-toast";
+import { downloadResumeFile } from "@/lib/api/portfolio";
+import { ProfileResponse } from "@/lib/interface/portfolio.interface";
 
-export default function Navbar() {
+export default function Navbar({
+  slug,
+  profile
+}: {
+  slug: string;
+  profile: ProfileResponse;
+}) {
   const [activeHash, setActiveHash] = useState("");
   const [openMobileDrawer, setOpenMobileDrawer] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { success, error } = useToast();
 
   useEffect(() => {
     const handleScrolled = () => {
@@ -54,6 +64,27 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, []);
 
+  async function handleDownloadResume(slug: string) {
+    try {
+      console.log("reached here");
+      const resume = await downloadResumeFile(slug);
+      const a = document.createElement("a");
+      a.href = resume.resumeDownloadFileUrl ?? "";
+      a.download = resume.resumeFileName;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      if (resume.resumeDownloadFileUrl) {
+        success("Resume suceessfully download");
+      }
+    } catch (errorMessage: any) {
+      error(
+        errorMessage instanceof Error ? errorMessage.message : errorMessage
+      );
+    }
+  }
+
   return (
     <header
       className={cn(
@@ -66,7 +97,7 @@ export default function Navbar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         {/* Logo */}
         <div className="flex items-center justify-center gap-3">
-          <Link href="/" className="group flex flex-col leading-none">
+          <Link href={`/${slug}`} className="group flex flex-col leading-none">
             <div className="relative shrink-0">
               <Image
                 src="/logo.svg"
@@ -80,11 +111,10 @@ export default function Navbar() {
 
           <div className="flex max-w-[80px] flex-col leading-tight">
             <span className="to-brand-accent bg-gradient-to-r from-white bg-clip-text text-sm font-bold text-transparent">
-              Yu Hang Tee
+              {profile?.name}
             </span>
           </div>
         </div>
-
         {/* Navigation */}
         <nav className="hidden items-center gap-8 md:flex">
           {NAV_LINK.map((link) => {
@@ -105,13 +135,15 @@ export default function Navbar() {
             );
           })}
         </nav>
-
         {/* CV */}
-        <button className="bg-brand-primary hover:bg-brand-accent/90 hidden items-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold text-white shadow-md transition-all hover:shadow-lg active:scale-[0.98] md:flex">
+
+        <button
+          onClick={() => handleDownloadResume(slug)}
+          className="bg-brand-primary hover:bg-brand-accent/90 hidden items-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold text-white shadow-md transition-all hover:shadow-lg active:scale-[0.98] md:flex"
+        >
           <Download className="size-4" />
           Download CV
         </button>
-
         {/* Mobile menu toggle */}
         <button
           className="text-brand-accent relative flex size-10 items-center justify-center md:hidden"
@@ -178,5 +210,3 @@ function MobileMenuDrawer({
     </div>
   );
 }
-
-function AboutMeSection() {}
