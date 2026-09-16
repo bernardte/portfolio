@@ -15,6 +15,7 @@ import { SkillModule } from "./skill/skill.module";
 import { FileUploadModule } from './file-upload/file-upload.module';
 import { CloudinaryModule } from './file-upload/cloudinary/cloudinary.module';
 import { PortfolioModule } from './portfolio/portfolio.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -37,7 +38,8 @@ import { PortfolioModule } from './portfolio/portfolio.module';
     SkillModule,
     CloudinaryModule,
     FileUploadModule,
-    PortfolioModule
+    PortfolioModule,
+    HealthModule
   ],
   controllers: [AppController],
   providers: [AppService],

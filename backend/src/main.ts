@@ -15,25 +15,27 @@ async function bootstrap() {
 
   app.use(cookieParser());
 
-  app.useGlobalPipes(new ValidationPipe({
-    exceptionFactory: (errors) => {
-      const formattedErrors = errors.map((error) => ({
-        file: error.property,
-        messages: Object.values(error.constraints ?? {}),
-      }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      exceptionFactory: (errors) => {
+        const formattedErrors = errors.map((error) => ({
+          file: error.property,
+          messages: Object.values(error.constraints ?? {}),
+        }));
 
-      return new BadRequestException({
-        success: false,
-        message: "Validation Failed",
-        errors: formattedErrors
-      })
-    },
-    whitelist: true,
-    forbidNonWhitelisted: true,
-    transform: true,
-    disableErrorMessages: false
-  }));
-  const port = process.env.PORT ?? 5000
+        return new BadRequestException({
+          success: false,
+          message: 'Validation Failed',
+          errors: formattedErrors,
+        });
+      },
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+      disableErrorMessages: false,
+    }),
+  );
+  const port = process.env.PORT ?? 5000;
   await app.listen(port);
 }
 bootstrap();
