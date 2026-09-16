@@ -17,6 +17,10 @@ function isExpired(token?: string) {
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  if (!pathname.startsWith("/admin")) {
+    return NextResponse.next();
+  }
+
   const publicPaths = ["/admin/auth"];
   if (publicPaths.some((path) => pathname.startsWith(path))) {
     return NextResponse.next();
