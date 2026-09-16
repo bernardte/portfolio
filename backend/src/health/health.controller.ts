@@ -2,7 +2,6 @@ import { Controller, Get } from '@nestjs/common';
 import {
   HealthCheck,
   HealthCheckService,
-  HttpHealthIndicator,
   TypeOrmHealthIndicator,
 } from '@nestjs/terminus';
 import { CloudinaryHealthIndicator } from './Indicators/cloudinary-health.validator';
@@ -10,7 +9,6 @@ import { CloudinaryHealthIndicator } from './Indicators/cloudinary-health.valida
 @Controller('health')
 export class HealthController {
   constructor(
-    private http: HttpHealthIndicator,
     private health: HealthCheckService,
     private db: TypeOrmHealthIndicator,
     private cloudinaryHealth: CloudinaryHealthIndicator,
@@ -21,7 +19,7 @@ export class HealthController {
   check() {
     return this.health.check([
       // 1.检查数据库连通性
-      () => this.db.pingCheck('database').withTimeout(1000),
+      () => this.db.pingCheck('database', { timeout: 1000 }),
 
       // 检测 Cloudinary CDN/API 服务连通性
       () => this.cloudinaryHealth.isHealthy('cloudinary'),
