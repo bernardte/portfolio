@@ -1,7 +1,6 @@
 import { cookies } from "next/headers";
 
-const API_URL =
-  typeof window === "undefined" ? process.env.BACKEND_URL : "/api/backend";
+const API_URL = process.env.BACKEND_URL || "http://localhost:5000";
 
 export async function serverFetch<T>(
   endpoint: string,
