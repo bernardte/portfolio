@@ -38,9 +38,6 @@ function redirectToLogin(request: NextRequest) {
   url.searchParams.set("next", request.nextUrl.pathname);
 
   const response = NextResponse.redirect(url);
-  // 清掉失效凭证，否则下次进来又会重试一次 refresh
-  response.cookies.delete("accessToken");
-  response.cookies.delete("refreshToken");
   return response;
 }
 
@@ -99,5 +96,7 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*"]
+  matcher: [
+    "/admin/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"
+  ]
 };
