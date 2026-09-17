@@ -1,4 +1,5 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const API_URL =
+  typeof window === "undefined" ? process.env.BACKEND_URL : "/api/backend";
 
 let isRefreshing = false;
 let failedQueue: Array<{
@@ -73,7 +74,7 @@ export async function apiClient<T>(
       console.error("🚨 REDIRECTING TO LOGIN");
       console.error("endpoint:", endpoint);
       console.error("refresh error:", refreshError);
-      
+
       processQueue(refreshError);
 
       if (typeof window !== "undefined") {
