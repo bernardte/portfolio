@@ -1,6 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // make sure the backend railway(deploy platform) and frontend vercel (deploy platform) communicate in same domain.
+  async rewrites() {
+    return [
+      {
+        source: "/api/backend/:path*",
+        destination: `${process.env.BACKEND_URL}/:path*`
+      }
+    ];
+  },
   /* config options here */
   images: {
     remotePatterns: [
