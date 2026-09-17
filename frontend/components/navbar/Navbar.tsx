@@ -172,6 +172,7 @@ export default function Navbar({
       <MobileMenuDrawer
         openMobileDrawer={openMobileDrawer}
         setOpenMobileDrawer={setOpenMobileDrawer}
+        onDownloadResume={() => handleDownloadResume(slug)}
       />
     </header>
   );
@@ -179,10 +180,12 @@ export default function Navbar({
 
 function MobileMenuDrawer({
   openMobileDrawer,
-  setOpenMobileDrawer
+  setOpenMobileDrawer,
+  onDownloadResume,
 }: {
   openMobileDrawer: boolean;
   setOpenMobileDrawer: React.Dispatch<React.SetStateAction<boolean>>;
+  onDownloadResume: () => void;
 }) {
   return (
     <div
@@ -202,7 +205,10 @@ function MobileMenuDrawer({
             {link.label}
           </Link>
         ))}
-        <button className="bg-brand-accent hover:bg-brand-accent/90 mt-3 flex items-center justify-center gap-2 rounded-md px-4 py-3 text-sm font-semibold text-white shadow-md transition-all active:scale-[0.98]">
+        <button
+          onClick={onDownloadResume}
+          className="bg-brand-accent hover:bg-brand-accent/90 mt-3 flex items-center justify-center gap-2 rounded-md px-4 py-3 text-sm font-semibold text-white shadow-md transition-all active:scale-[0.98]"
+        >
           <Download className="size-4" />
           Download CV
         </button>
